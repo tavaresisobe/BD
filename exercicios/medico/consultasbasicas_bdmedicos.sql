@@ -47,19 +47,3 @@ where c.cod = c2.clinica_cod and m.cod = c2.medico_cod and m.nome = 'Arthur'
 select e.nome 
 from medico as m, especialidade as e, medicoespecialidade as m2
 where m.cod = m2.medico_cod and e.cod = m2.especialidade_cod and m.nome = 'Andre'
-
--- 8:
-
-select m.nome
-from medico as m, consulta as c, 
-where m.cod = c.medico_cod and c.hora IN 
-(select MAX(hora) 
-from consulta);
-
--- 9:
-
-select m.nome
-from medico as m, 
-where m.cod not in (
-select medico_cod
-from medicoclinica)
