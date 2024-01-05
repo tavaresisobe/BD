@@ -49,9 +49,6 @@ create table Area(
 	PRIMARY KEY(cod)
 )Engine=INNODB;
 
-ALTER TABLE area 
-MODIFY COLUMN nome VARCHAR(30);
-
 INSERT INTO area (cod, nome)
 VALUES
     (1, 'Computação'),
@@ -246,7 +243,7 @@ create table usuario_documentos(
 
 INSERT INTO usuario_documentos (usuario_cod, documento_cod)
 VALUES
-	(1, 1),
+    (1, 1),
     (1, 4),
     (1, 2),
     (4, 6),
@@ -256,65 +253,3 @@ VALUES
     (5, 6),
     (9, 2),
     (2, 2);
-   
-   
- 
- SELECT nome, especializacao FROM Pesquisador;
-
-SELECT p.nome
-FROM pesquisador as p, pesquisa p2, pesquisador_pesquisa as pp, area as a, area_pesquisa as ap
-WHERE p.cod = pp.pesquisador_cod
-AND p2.cod = pp.pesquisa_cod
-AND p2.cod = ap.pesquisa_cod
-AND a.cod = ap.area_cod AND a.nome = 'Computação'
-
-SELECT p.nome AS pesquisador, COUNT(pp.pesquisador_cod) AS qtd_pesquisas
-FROM Pesquisador as p
-JOIN pesquisador_pesquisa as pp ON p.cod = pp.pesquisador_cod
-GROUP BY p.cod
-HAVING COUNT(pp.pesquisa_cod) > 1;
-
-select p.nome as nome
-from pesquisador as p
-where p.grau = "Mestrado"
-
-SELECT u.nome AS usuario
-FROM Usuario as u
-LEFT JOIN usuario_documentos ud ON u.cod = ud.usuario_cod
-WHERE ud.documento_cod IS NULL;
-
-SELECT p.nome AS pesquisador
-FROM Pesquisador p
-LEFT JOIN pesquisador_pesquisa pp ON p.cod = pp.pesquisador_cod
-WHERE pp.pesquisador_cod IS NULL;
-
-SELECT p.cod, p.titulo, COUNT(d.cod) AS qtd_documentos
-FROM Pesquisa as p
-LEFT JOIN Documentos d ON p.cod = d.pesquisa_cod
-GROUP BY p.cod, p.titulo;
-
-SELECT p.titulo, COUNT(d.cod) AS qtd_documentos
-FROM Pesquisa as p
-LEFT JOIN Documentos d ON p.cod = d.pesquisa_cod
-GROUP BY  p.titulo
-ORDER BY qtd_documentos DESC;
-
-SELECT p.nome
-FROM pesquisador as p
-INNER JOIN Campus as c ON p.campus_cod = c.cod AND c.nome = 'ICT-UNIFESP'
-
-SELECT u.nome, count(ud.usuario_cod) AS qtd_de_acessos
-FROM usuario as u 
-LEFT JOIN usuario_documentos as ud ON u.cod = ud.usuario_cod
-GROUP BY u.cod
-ORDER BY qtd_de_acessos DESC;
-
-SELECT p.titulo, b.total as valor, m.nome
-FROM pesquisa as p 
-LEFT JOIN bolsa as b ON p.cod = b.pesquisa_cod
-LEFT JOIN mantedor as m ON b.mantedor_cod = m.cod
-ORDER BY valor DESC;
-
-SELECT p.titulo
-FROM pesquisa as p
-INNER JOIN bolsa as b ON p.cod = b.pesquisa_cod AND b.total > (SELECT AVG(total) FROM bolsa as b2)
