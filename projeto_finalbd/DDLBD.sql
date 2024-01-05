@@ -18,7 +18,6 @@ VALUES
     (6,'Campus Baixada Santista', 'Santos', 'secretaria.bs@unifesp.br'),
     (7,'Escola Paulista de Medicina', 'São Paulo', 'secretaria.sp@unifesp.br');
 
-
 create table Pesquisador(
 	cod integer auto_increment,
 	nome varchar(40),
@@ -81,7 +80,7 @@ VALUES
     (5, 'Pesquisa em Inteligência Artificial', '2019-09-01', '2020-06-30', 'Concluída', 'Desenvolvimento de algoritmos de aprendizado de máquina'),
     (6, 'Estudo de Novas Tecnologias na Medicina', '2021-04-15', '2022-11-30', 'Em andamento', 'Investigação sobre o uso de tecnologias emergentes na área médica'),
     (7, 'Exploração Espacial', '2017-08-01', '2018-05-31', 'Concluída', 'Pesquisa sobre tecnologias para exploração espacial'),
-	(8, 'Estudo de Sustentabilidade Urbana', '2020-08-15', '2022-03-31', 'Em andamento', 'Análise das práticas de sustentabilidade em ambientes urbanos'),
+    (8, 'Estudo de Sustentabilidade Urbana', '2020-08-15', '2022-03-31', 'Em andamento', 'Análise das práticas de sustentabilidade em ambientes urbanos'),
     (9, 'Pesquisa em Genética Humana', '2016-03-01', '2017-12-31', 'Concluída', 'Investigação sobre os padrões genéticos em populações humanas'),
     (10, 'Desenvolvimento de Vacina Antiviral', '2023-01-10', '2024-12-31', 'Planejamento', 'Projeto para desenvolver uma vacina contra vírus emergentes');
    
@@ -94,7 +93,7 @@ create table Documentos(
 	FOREIGN KEY(pesquisa_cod) REFERENCES Pesquisa(cod)
 )Engine=INNODB;
 
-INSERT INTO documentos  (cod, tipo, dataatualizacao, pesquisa_cod)
+INSERT INTO documentos (cod, tipo, dataatualizacao, pesquisa_cod)
 VALUES
     (1, 'Relatorio', '2018-05-31', 7),
     (2, 'Relatorio', '2019-11-04', 3),
@@ -118,7 +117,7 @@ create table Usuario(
 	PRIMARY KEY(cod)
 )Engine=INNODB;
 
-INSERT INTO usuario  (cod, nome, telefone, email, ocupacao, status_acesso, motivo)
+INSERT INTO usuario (cod, nome, telefone, email, ocupacao, status_acesso, motivo)
 VALUES
     (1, 'Jose', '1111-1111', 'jose@embraer.com', 'CEO EMBRAER', 'Ativo', 'Interesse em oferecer uma bolsa aos pesquisadores'),
     (2, 'Maria', '2222-2222', 'maria@itau.com', 'Engenheira Itau', 'Ativo', 'Acesso regular ao sistema'),
@@ -143,7 +142,7 @@ create table Publicacao(
 )Engine=INNODB;
 
 
-INSERT INTO publicacao  (cod, titulo, nomerevista, datapublicacao, statusrevisao, documento_cod)
+INSERT INTO publicacao (cod, titulo, nomerevista, datapublicacao, statusrevisao, documento_cod)
 VALUES
     (1, 'Exploração Espacial', 'Science', '2018-05-31', 'Revisado', 1),
     (2, 'Machine Learning Avançado', 'Journal of Artificial Intelligence Research', '2020-10-15', 'Aguardando Revisão', 10),
