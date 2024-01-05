@@ -1,4 +1,4 @@
-##Entidades:
+##Criação de tabelas:
 
 CREATE TABLE Campus (
     cod INTEGER AUTO_INCREMENT,
@@ -84,8 +84,6 @@ create table Bolsa(
 	FOREIGN KEY(mantedor_cod) REFERENCES Mantedor(cod)
 )Engine=INNODB;
 
-##Relacoes:
-
 create table area_pesquisa(
 	area_cod integer,
 	pesquisa_cod integer,
@@ -111,9 +109,7 @@ create table usuario_documentos(
 	FOREIGN KEY(documento_cod) REFERENCES Documentos(cod)
 )Engine=INNODB;
 
-
-##Inserção
-
+##Inserção de dados
 	
 INSERT INTO campus (cod, nome, cidade, email_secretaria)
 VALUES
