@@ -53,8 +53,7 @@ SELECT p.nome
 FROM pesquisador as p
 INNER JOIN Campus as c ON p.campus_cod = c.cod AND c.nome = 'ICT-UNIFESP'
 
-## Listar todos os usuários juntamente com a quantidade de documentos aos
-quais têm acesso:
+## Listar todos os usuários juntamente com a quantidade de documentos aos quais têm acesso:
 	
 SELECT u.nome, count(ud.usuario_cod) AS qtd_de_acessos
 FROM usuario as u 
