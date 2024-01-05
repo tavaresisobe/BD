@@ -8,16 +8,6 @@ CREATE TABLE Campus (
     PRIMARY KEY(cod)
 ) ENGINE=INNODB;
 
-INSERT INTO campus (cod, nome, cidade, email_secretaria)
-VALUES
-    (1,'ICT-UNIFESP', 'São José dos Campos', 'secretaria.sjc@unifesp.br'),
-    (2,'Unidade Talim', 'São José dos Campos', 'secretaria.sjc@unifesp.br'),
-    (3,'EPPEN', 'Osasco', 'secretaria.osasco@unifesp.br'),
-    (4,'EFLCH', 'Guarulhos', 'secretariaguarulhos@unifesp.br'),
-    (5,'Unidade José Alencar', 'Diadema', 'secretaria.diadema@unifesp.br'),
-    (6,'Campus Baixada Santista', 'Santos', 'secretaria.bs@unifesp.br'),
-    (7,'Escola Paulista de Medicina', 'São Paulo', 'secretaria.sp@unifesp.br');
-
 create table Pesquisador(
 	cod integer auto_increment,
 	nome varchar(40),
@@ -28,6 +18,112 @@ create table Pesquisador(
 	PRIMARY KEY(cod),
 	FOREIGN KEY(campus_cod) REFERENCES campus(cod)
 )Engine=INNODB;
+
+create table Area(
+	cod integer auto_increment,
+	nome varchar(30),
+	PRIMARY KEY(cod)
+)Engine=INNODB;
+
+create table Pesquisa(
+	cod integer auto_increment,
+	titulo varchar(50),
+	datainicio date, 
+	datafim date,
+	status varchar(15),
+	descricao varchar(150),
+	PRIMARY KEY(cod)
+)Engine=INNODB;
+   
+create table Documentos(
+	cod integer auto_increment,
+	tipo varchar(30),
+	dataatualizacao date,
+	pesquisa_cod integer,
+	PRIMARY KEY(cod),
+	FOREIGN KEY(pesquisa_cod) REFERENCES Pesquisa(cod)
+)Engine=INNODB;
+
+create table Usuario(
+	cod integer auto_increment,
+	nome varchar (30),
+	telefone varchar(15),
+	email varchar(30) ,
+	ocupacao varchar(30),
+	status_acesso varchar(15),
+	motivo varchar(50),
+	PRIMARY KEY(cod)
+)Engine=INNODB;
+
+create table Publicacao(
+	cod integer auto_increment,
+	titulo varchar (50),
+	nomerevista varchar (50),
+	datapublicacao date,
+	statusrevisao varchar (30),
+	documento_cod integer,
+	PRIMARY KEY(cod),
+	FOREIGN KEY(documento_cod) REFERENCES Documentos(cod)
+)Engine=INNODB;
+
+create table Mantedor(
+	cod integer auto_increment,
+	nome varchar (20),
+	PRIMARY KEY(cod)
+)Engine=INNODB;
+
+create table Bolsa(
+	cod integer auto_increment,
+	total float,
+	datainicio date,
+	datafim date,
+	pesquisa_cod integer,
+	mantedor_cod integer,
+	PRIMARY KEY(cod),
+	FOREIGN KEY(pesquisa_cod) REFERENCES Pesquisa(cod),
+	FOREIGN KEY(mantedor_cod) REFERENCES Mantedor(cod)
+)Engine=INNODB;
+
+##Relacoes:
+
+create table area_pesquisa(
+	area_cod integer,
+	pesquisa_cod integer,
+	PRIMARY KEY(area_cod, pesquisa_cod),
+	FOREIGN KEY(area_cod) REFERENCES Area(cod),
+	FOREIGN KEY(pesquisa_cod) REFERENCES Pesquisa(cod)
+)Engine=INNODB;
+
+create table pesquisador_pesquisa(
+	pesquisador_cod integer,
+	pesquisa_cod integer,
+	cargo varchar(15),
+	PRIMARY KEY(pesquisador_cod, pesquisa_cod),
+	FOREIGN KEY(pesquisador_cod) REFERENCES Pesquisador(cod),
+	FOREIGN KEY(pesquisa_cod) REFERENCES Pesquisa(cod)
+)Engine=INNODB;
+
+create table usuario_documentos(
+	usuario_cod integer,
+	documento_cod integer,
+	PRIMARY KEY(usuario_cod, documento_cod),
+	FOREIGN KEY(usuario_cod) REFERENCES Usuario(cod),
+	FOREIGN KEY(documento_cod) REFERENCES Documentos(cod)
+)Engine=INNODB;
+
+
+##Inserção
+
+	
+INSERT INTO campus (cod, nome, cidade, email_secretaria)
+VALUES
+    (1,'ICT-UNIFESP', 'São José dos Campos', 'secretaria.sjc@unifesp.br'),
+    (2,'Unidade Talim', 'São José dos Campos', 'secretaria.sjc@unifesp.br'),
+    (3,'EPPEN', 'Osasco', 'secretaria.osasco@unifesp.br'),
+    (4,'EFLCH', 'Guarulhos', 'secretariaguarulhos@unifesp.br'),
+    (5,'Unidade José Alencar', 'Diadema', 'secretaria.diadema@unifesp.br'),
+    (6,'Campus Baixada Santista', 'Santos', 'secretaria.bs@unifesp.br'),
+    (7,'Escola Paulista de Medicina', 'São Paulo', 'secretaria.sp@unifesp.br');
 
 INSERT INTO pesquisador (cod, nome, email, grau, especializacao, campus_cod)
 VALUES
@@ -42,12 +138,6 @@ VALUES
     (9, 'Amanda', 'amanda@unifesp.br', 'Doutorado', 'Física', 1),
     (10, 'Alvaro', 'alvaro@unifesp.br', 'Pós-Doutorado', 'Estrutura de Dados', 1);
 
-create table Area(
-	cod integer auto_increment,
-	nome varchar(30),
-	PRIMARY KEY(cod)
-)Engine=INNODB;
-
 INSERT INTO area (cod, nome)
 VALUES
     (1, 'Computação'),
@@ -61,16 +151,6 @@ VALUES
     (9, 'Inteligência Artificial'),
     (10, 'Bioinformática');
 
-create table Pesquisa(
-	cod integer auto_increment,
-	titulo varchar(50),
-	datainicio date, 
-	datafim date,
-	status varchar(15),
-	descricao varchar(150),
-	PRIMARY KEY(cod)
-)Engine=INNODB;
-
 INSERT INTO pesquisa (cod, titulo, datainicio, datafim, status, descricao)
 VALUES
     (1, 'Utilizando Imagens para detectar desmatamento', '2010-03-21', '2011-12-31', 'Em andamento', 'A vigente pesquisa visa explorar o potencial da inteligencia artificial para detectar desmatemento em imagens de satélite'),
@@ -83,15 +163,6 @@ VALUES
     (8, 'Estudo de Sustentabilidade Urbana', '2020-08-15', '2022-03-31', 'Em andamento', 'Análise das práticas de sustentabilidade em ambientes urbanos'),
     (9, 'Pesquisa em Genética Humana', '2016-03-01', '2017-12-31', 'Concluída', 'Investigação sobre os padrões genéticos em populações humanas'),
     (10, 'Desenvolvimento de Vacina Antiviral', '2023-01-10', '2024-12-31', 'Planejamento', 'Projeto para desenvolver uma vacina contra vírus emergentes');
-   
-create table Documentos(
-	cod integer auto_increment,
-	tipo varchar(30),
-	dataatualizacao date,
-	pesquisa_cod integer,
-	PRIMARY KEY(cod),
-	FOREIGN KEY(pesquisa_cod) REFERENCES Pesquisa(cod)
-)Engine=INNODB;
 
 INSERT INTO documentos (cod, tipo, dataatualizacao, pesquisa_cod)
 VALUES
@@ -106,17 +177,6 @@ VALUES
     (9, 'Relatorio Final', '2018-05-31', 7),
     (10, 'Manual Técnico', '2016-09-12', 1);
 
-create table Usuario(
-	cod integer auto_increment,
-	nome varchar (30),
-	telefone varchar(15),
-	email varchar(30) ,
-	ocupacao varchar(30),
-	status_acesso varchar(15),
-	motivo varchar(50),
-	PRIMARY KEY(cod)
-)Engine=INNODB;
-
 INSERT INTO usuario (cod, nome, telefone, email, ocupacao, status_acesso, motivo)
 VALUES
     (1, 'Jose', '1111-1111', 'jose@embraer.com', 'CEO EMBRAER', 'Ativo', 'Interesse em oferecer uma bolsa aos pesquisadores'),
@@ -130,30 +190,12 @@ VALUES
     (9, 'Tiago', '1616-1616', 'tiago@microsoft.com', 'Desenvolvedor', 'Ativo', 'Implementação de melhorias no sistema'),
     (10, 'Sophie', '1717-1717', 'sophie@openia.com', 'Pesquisadora de IA', 'Ativo', 'Colaboração em projetos de pesquisa');
 
-create table Publicacao(
-	cod integer auto_increment,
-	titulo varchar (50),
-	nomerevista varchar (50),
-	datapublicacao date,
-	statusrevisao varchar (30),
-	documento_cod integer,
-	PRIMARY KEY(cod),
-	FOREIGN KEY(documento_cod) REFERENCES Documentos(cod)
-)Engine=INNODB;
-
-
 INSERT INTO publicacao (cod, titulo, nomerevista, datapublicacao, statusrevisao, documento_cod)
 VALUES
     (1, 'Exploração Espacial', 'Science', '2018-05-31', 'Revisado', 1),
     (2, 'Machine Learning Avançado', 'Journal of Artificial Intelligence Research', '2020-10-15', 'Aguardando Revisão', 10),
     (3, 'Sustentabilidade Urbana em Metrópoles', 'Environmental Science & Technology', '2019-07-20', 'Publicado', 8),
     (4, 'Avanços em Genética Humana', 'Nature Genetics', '2022-02-28', 'Rejeitado', 6);
-
-create table Mantedor(
-	cod integer auto_increment,
-	nome varchar (20),
-	PRIMARY KEY(cod)
-)Engine=INNODB;
 
 INSERT INTO mantedor (cod, nome)
 VALUES
@@ -168,34 +210,12 @@ VALUES
     (9, 'Finep'),
     (10, 'CGEE');
 
-create table Bolsa(
-	cod integer auto_increment,
-	total float,
-	datainicio date,
-	datafim date,
-	pesquisa_cod integer,
-	mantedor_cod integer,
-	PRIMARY KEY(cod),
-	FOREIGN KEY(pesquisa_cod) REFERENCES Pesquisa(cod),
-	FOREIGN KEY(mantedor_cod) REFERENCES Mantedor(cod)
-)Engine=INNODB;
-
 INSERT INTO bolsa (cod, total, datainicio, datafim, pesquisa_cod, mantedor_cod)
 VALUES
     (1, 5.000, '2010-03-21', '2011-12-31', 1, 1),
     (2, 100.000, '2015-01-10', '2016-06-30', 2, 1),
     (3, 12.000, '2020-08-15', '2022-03-31', 8, 9),
     (4, 23.000, '2023-01-10', '2024-12-31', 10, 4);
-
-##Relacoes:
-
-create table area_pesquisa(
-	area_cod integer,
-	pesquisa_cod integer,
-	PRIMARY KEY(area_cod, pesquisa_cod),
-	FOREIGN KEY(area_cod) REFERENCES Area(cod),
-	FOREIGN KEY(pesquisa_cod) REFERENCES Pesquisa(cod)
-)Engine=INNODB;
 
 INSERT INTO area_pesquisa (area_cod, pesquisa_cod)
 VALUES
@@ -210,15 +230,6 @@ VALUES
     (9, 2),
     (10, 2);
 
-create table pesquisador_pesquisa(
-	pesquisador_cod integer,
-	pesquisa_cod integer,
-	cargo varchar(15),
-	PRIMARY KEY(pesquisador_cod, pesquisa_cod),
-	FOREIGN KEY(pesquisador_cod) REFERENCES Pesquisador(cod),
-	FOREIGN KEY(pesquisa_cod) REFERENCES Pesquisa(cod)
-)Engine=INNODB;
-
 INSERT INTO pesquisador_pesquisa (pesquisador_cod, pesquisa_cod, cargo)
 VALUES
     (1, 1, 'Autor'),
@@ -231,14 +242,6 @@ VALUES
     (8, 6, 'Autor'),
     (9, 2, 'Colaborador'),
     (10, 2, 'Autor');
-
-create table usuario_documentos(
-	usuario_cod integer,
-	documento_cod integer,
-	PRIMARY KEY(usuario_cod, documento_cod),
-	FOREIGN KEY(usuario_cod) REFERENCES Usuario(cod),
-	FOREIGN KEY(documento_cod) REFERENCES Documentos(cod)
-)Engine=INNODB;
 
 INSERT INTO usuario_documentos (usuario_cod, documento_cod)
 VALUES
