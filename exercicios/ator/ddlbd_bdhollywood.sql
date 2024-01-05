@@ -61,6 +61,3 @@ values(1,1, 'Mary', 3000),
 UPDATE Ator
 SET sexo = 'm'
 WHERE nomeart = 'BradPitt';
-
-DELETE FROM Ator
-WHERE IS
